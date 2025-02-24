@@ -470,7 +470,7 @@ public class Lab4_Solution {
 			//Graph with only data
 			solution.saveGraph(solution.model, file.replace(".csv", "-"+task)+".ttl");
 				    
-			//OWL 2 RL reasoning (not necessary for this lab. More in Week 7)
+			//OWL 2 RL reasoning
 			solution.performReasoning("files/lab4/ontology_worldcities.ttl");
 			//solution.performReasoning("files_lab4/ontology_worldcities.owl");
 				    
