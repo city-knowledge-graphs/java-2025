@@ -54,8 +54,7 @@ public class RDFSReasoning {
 		
 		
 		System.out.println("\nChecking entailments: ");
-		String triple1 = ":Father rdfs:subClassOf :Person .";
-		checkEntailment(inf_model, triple1);
+		checkEntailments(inf_model);
 		
 		
 		
@@ -64,6 +63,33 @@ public class RDFSReasoning {
         OutputStream out = new FileOutputStream(file_ouput);
         RDFDataMgr.write(out, inf_model, RDFFormat.TURTLE);
 	}
+	
+	
+	
+	
+	public void checkEntailments(InfModel inf_model) {
+	    
+	    String triple1 = ":Father rdfs:subClassOf :Person ."; 
+	    String triple2 = ":Woman rdfs:subClassOf :Person .";
+	    String triple3 = ":Juliet a :Person .";
+	    String triple4 = ":Ann a :Child .";
+	    String triple5 = ":Ann :isChildOf :Carl .";
+	    String triple6 = ":Ann :hasParent :Juliet .";
+	    String triple7 = "rdfs:range rdf:type rdfs:Resource .";
+	    String triple8 = ":Mother rdfs:subClassOf :Person .";
+	    
+	    
+	    checkEntailment(inf_model, triple1);
+	    checkEntailment(inf_model, triple2);
+	    checkEntailment(inf_model, triple3);
+	    checkEntailment(inf_model, triple4);
+	    checkEntailment(inf_model, triple5);
+	    checkEntailment(inf_model, triple6);
+	    checkEntailment(inf_model, triple7);
+	    checkEntailment(inf_model, triple8);
+}
+	
+	
 	
 	
 	

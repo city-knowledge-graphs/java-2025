@@ -58,9 +58,7 @@ public class OWLReasoning {
 		
 		
 		System.out.println("\nChecking entailments: ");
-		String triple1 = ":Carl :hasChild :Ann .";
-	   
-	    checkEntailment(inf_model, triple1);
+	    checkEntailments(inf_model);
 	   
 		
 		
@@ -69,6 +67,20 @@ public class OWLReasoning {
 		//Storing in RDF/xml
         OutputStream out = new FileOutputStream(file_ouput);
         RDFDataMgr.write(out, inf_model, RDFFormat.TURTLE);
+	}
+	
+	
+	
+	public void checkEntailments(InfModel inf_model) {
+		    
+	    String triple1 = ":Carl :hasChild :Ann .";
+	    String triple2 = ":Ann rdf:type :Child .";
+	    String triple3 = ":Juliet :hasChild :Ann .";
+	    
+	    checkEntailment(inf_model, triple1);
+	    checkEntailment(inf_model, triple2);
+	    checkEntailment(inf_model, triple3);
+	   
 	}
 	
 	
