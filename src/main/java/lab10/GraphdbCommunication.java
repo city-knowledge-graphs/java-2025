@@ -109,14 +109,14 @@ public class GraphdbCommunication {
 				//GraphDB Endpoint
 				graphdb_endpoint = localhost + "/repositories/lab_graphdb";
 				
-				path_to_data_file = "files/worldcities-free-100-task2.ttl";
-				path_to_onto_file = "files/ontology_lab5.ttl";
+				path_to_data_file = "files/lab7/worldcities-free-100-task1.ttl";
+				path_to_onto_file = "files/lab7/ontology_worldcities.ttl";
 				queryStr = 
-			            "PREFIX lab5: <http://www.semanticweb.org/ernesto/in3067-inm713/lab5/>\n" +
+			            "PREFIX wco: <http://www.semanticweb.org/ernesto/in3067-inm713/wco/>\n" +
 			                   	"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> \n" +
 			                	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> \n" +
 			                   	"SELECT DISTINCT ?country (COUNT(?city) AS ?num_cities) WHERE { \n" +
-			                    "?country lab5:hasCity ?city .  \n" +
+			                    "?country wco:hasCity ?city .  \n" +
 			                "\n}"+
 			                "GROUP BY ?country\n" +
 			                "ORDER BY DESC(?num_cities)\n" +
@@ -125,21 +125,21 @@ public class GraphdbCommunication {
 			else if(test.equals("nobel-prizes")) {
 				
 				//Load query from file				
-				query_file="files/lab9/query_nobel-prize.txt";
-				//query_file="files/lab9/solution/query7.5_nobel-prize.txt";
+				query_file="files/lab10/query_nobel-prize-service.txt";
+				//query_file="files/lab10/query7.6_nobel-prize.txt";
 				
 				ReadFile qfile = new ReadFile(query_file);		
 				queryStr = qfile.readFileIntoString();
 				
 				graphdb_endpoint = localhost + "/repositories/NobelPrize";
-				path_to_onto_file = "files/nobel-prize-ontology.rdf";
+				path_to_onto_file = "files/lab7/nobel-prize-ontology.rdf";
 				path_to_data_file = "files/nobelprize_kg.nt";
 				
 			}
 			else {
 				format="trig";
 				graphdb_endpoint = localhost + "/repositories/namedGraphs";    
-				path_to_data_file = "files/lab9/named_graphs.ttl";
+				path_to_data_file = "files/lab10/named_graphs.ttl";
 				
 					    
 				query_file="files/lab9/query_named_simple.txt";
