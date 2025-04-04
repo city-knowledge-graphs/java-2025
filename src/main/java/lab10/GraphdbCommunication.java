@@ -1,7 +1,9 @@
 package lab10;
 
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.util.Iterator;
 
 import org.apache.jena.query.Query;
@@ -24,22 +26,45 @@ public class GraphdbCommunication {
 	}
 	
 	
-	public void loadingData(String graphdb_endpoint, String file, String format) throws IOException, InterruptedException {
+	public void loadingData(String graphdb_endpoint, String file, String format, boolean platform_windows) throws IOException, InterruptedException {
 		
 		System.out.println("Uploading file: " + file);
 		String curl_command;
 		
+		
+		//String userDirectory = FileSystems.getDefault()
+	    //        .getPath("")
+	    //       .toAbsolutePath()
+	    //        .toString();	        
+	    //System.out.println(userDirectory2 + File.separator + file);
+		//String full_file_path = userDirectory + File.separator + file;		
+		
+				
 		if (format.equals("trig"))
-			curl_command = "curl '" + graphdb_endpoint + "/statements' -X POST -H \"Content-Type:application/x-trig\" -T '" + file + "'";
+			//curl_command = "curl '" + graphdb_endpoint + "/statements' -X POST -H \"Content-Type:application/x-trig\" -T '" + full_file_path + "'";
+			curl_command = "curl -X POST -H \"Content-Type:application/x-trig\" -T " + file + " " + graphdb_endpoint + "/statements";
 		else
-			curl_command = "curl '" + graphdb_endpoint + "/statements' -X POST -H \"Content-Type:application/x-turtle\" -T '" + file + "'";
-
-	    //Windows
-	    //String[] commands = new String[]{"CMD", "/c", curl_command};
+			//curl_command = "curl '" + graphdb_endpoint + "/statements' -X POST -H \"Content-Type:application/x-turtle\" -T '" + full_file_path + "'";
+			curl_command = "curl -X POST -H \"Content-Type:application/x-turtle\" -T " + file + " " + graphdb_endpoint + "/statements";
 	    
-	    //Linux/Mac
-	    String[] commands = new String[]{"/bin/bash", "-c", curl_command};
+	    String[] commands;
+	    
+	    //Windows
+	    if (platform_windows)
+	    	commands = new String[]{"CMD", "/c", curl_command};
+	    else	    
+	    	//Linux/Mac
+	    	commands = new String[]{"/bin/bash", "-c", curl_command};
+	    
+	    
+	    System.out.println(commands[0] + " " + commands[1] + " " +  commands[2]);
+	    
+	    
+	    
+	    
+	    
 		Runtime.getRuntime().exec(commands);
+		
 		
 	}
 	
@@ -82,16 +107,18 @@ public class GraphdbCommunication {
 	
 
 	public static void main(String[] args) {
-	
 		
-								
-		
+				
 		String test;		
 		
+		boolean platform_windows = true; //Set to false for Mac/Linux
+		
+		
 		test="world-cities";
-		//test="nobel-prizes";
+		test="nobel-prizes";
 		//test="named-graph";
-		boolean load_Data=true;
+		//boolean load_Data=true;
+		boolean load_Data=false;
 		
 		
 		String graphdb_endpoint;
@@ -125,28 +152,29 @@ public class GraphdbCommunication {
 			else if(test.equals("nobel-prizes")) {
 				
 				//Load query from file				
-				query_file="files/lab10/query_nobel-prize-service.txt";
+				//query_file="files/lab10/query_nobel-prize-service.txt";
 				//query_file="files/lab10/query7.6_nobel-prize.txt";
+				query_file="files/lab7/solution/query7.5_nobel-prize.txt";
 				
 				ReadFile qfile = new ReadFile(query_file);		
 				queryStr = qfile.readFileIntoString();
 				
-				graphdb_endpoint = localhost + "/repositories/NobelPrize";
+				graphdb_endpoint = localhost + "/repositories/nobel_prize_java";
 				path_to_onto_file = "files/lab7/nobel-prize-ontology.rdf";
 				path_to_data_file = "files/nobelprize_kg.nt";
 				
 			}
 			else {
 				format="trig";
-				graphdb_endpoint = localhost + "/repositories/namedGraphs";    
+				graphdb_endpoint = localhost + "/repositories/named_graphs_java";    
 				path_to_data_file = "files/lab10/named_graphs.ttl";
 				
 					    
-				query_file="files/lab9/query_named_simple.txt";
-				query_file="files/lab9/query_named1.txt";
-				//query_file="files/lab9/query_named2.txt";
-				//query_file="files/lab9/query_named_all.txt";
-				//query_file="files/lab9/query_named_from.txt";
+				query_file="files/lab10/query_named_simple.txt";
+				//query_file="files/lab10/query_named1.txt";
+				//query_file="files/lab10/query_named2.txt";
+				//query_file="files/lab10/query_named_all.txt";
+				//query_file="files/lab10/query_named_from.txt";
 				
 					    
 				ReadFile qfile = new ReadFile(query_file);		
@@ -163,9 +191,9 @@ public class GraphdbCommunication {
 			//LOAD DATA
 			if (load_Data) {
 				if (path_to_onto_file!=null) 
-					graphdb_access.loadingData(graphdb_endpoint, path_to_onto_file, format);
+					graphdb_access.loadingData(graphdb_endpoint, path_to_onto_file, format, platform_windows);
 				
-				graphdb_access.loadingData(graphdb_endpoint, path_to_data_file, format);
+				graphdb_access.loadingData(graphdb_endpoint, path_to_data_file, format, platform_windows);
 			}
 			
 			
